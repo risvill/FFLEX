@@ -3,6 +3,7 @@ import 'package:fflex/view/home/activity_traker_view.dart';
 import 'package:fflex/view/home/home_view.dart';
 import 'package:fflex/view/login/welcome_view.dart';
 import 'package:fflex/view/login/what_your_goal_view.dart';
+import 'package:fflex/view/meal_planner/meal_planner_view.dart';
 import 'package:fflex/view/on_boarding/on_boarding_view.dart';
 import 'package:fflex/view/on_boarding/started_view.dart';
 import 'package:fflex/view/profile/profile_view.dart';
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
           fontFamily: "Montserrat"),
       home:
-      const WelcomeView()
+      const MealPlannerView()
     );
   }
 }
