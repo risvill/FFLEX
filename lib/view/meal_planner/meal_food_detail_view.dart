@@ -176,20 +176,6 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                         ),
                         hintText: "Search Pancake"),
                   )),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    width: 1,
-                    height: 25,
-                    color: TColor.gray.withOpacity(0.3),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Image.asset(
-                      "assets/img/Filter.png",
-                      width: 25,
-                      height: 25,
-                    ),
-                  )
                 ],
               ),
             ),

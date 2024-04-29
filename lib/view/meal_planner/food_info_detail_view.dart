@@ -203,15 +203,7 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                                 ],
                               ),
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Image.asset(
-                                "assets/img/fav.png",
-                                width: 15,
-                                height: 15,
-                                fit: BoxFit.contain,
-                              ),
-                            )
+                          
                           ],
                         ),
                       ),

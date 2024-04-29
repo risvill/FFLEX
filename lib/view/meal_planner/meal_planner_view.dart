@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:fflex/view/meal_planner/meal_food_detail_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,12 @@ class MealPlannerView extends StatefulWidget {
 }
 
 class _MealPlannerViewState extends State<MealPlannerView> {
+  int touchedIndex = -1;
+  String selectedValue = "Месяц";
+  bool isWeekSelected = true;
+  List<LineChartBarData> get lineBarsData1 {
+  return isWeekSelected ? [lineChartBarData1_1] : [lineChartBarData1_2_monthly];
+  }
   List todayMealArr = [
     {
       "name": "Salmon Nigiri",
@@ -27,6 +35,39 @@ class _MealPlannerViewState extends State<MealPlannerView> {
       "time": "28/05/2023 08:00 AM"
     },
   ];
+  List<FlSpot> get allSpots => const [
+        FlSpot(0, 20),
+        FlSpot(1, 25),
+        FlSpot(2, 40),
+        FlSpot(3, 50),
+        FlSpot(4, 35),
+        FlSpot(5, 40),
+        FlSpot(6, 30),
+        FlSpot(7, 20),
+        FlSpot(8, 25),
+        FlSpot(9, 40),
+        FlSpot(10, 50),
+        FlSpot(11, 35),
+        FlSpot(12, 50),
+        FlSpot(13, 60),
+        FlSpot(14, 40),
+        FlSpot(15, 50),
+        FlSpot(16, 20),
+        FlSpot(17, 25),
+        FlSpot(18, 40),
+        FlSpot(19, 50),
+        FlSpot(20, 35),
+        FlSpot(21, 80),
+        FlSpot(22, 30),
+        FlSpot(23, 20),
+        FlSpot(24, 25),
+        FlSpot(25, 40),
+        FlSpot(26, 50),
+        FlSpot(27, 35),
+        FlSpot(28, 50),
+        FlSpot(29, 60),
+        FlSpot(30, 40)
+      ];
 
   List findEatArr = [
     {
@@ -34,12 +75,43 @@ class _MealPlannerViewState extends State<MealPlannerView> {
       "image": "assets/img/m_3.png",
       "number": "120+ Foods"
     },
-    {"name": "Lunch", "image": "assets/img/m_4.png", "number": "130+ Foods"},
+    {
+      "name": "Lunch", 
+      "image": "assets/img/m_4.png", 
+      "number": "130+ Foods"
+    },
+    {
+      "name": "Dinner", 
+      "image": "assets/img/apple_pie.png", 
+      "number": "140+ Foods"
+    },
   ];
+    List<int> showingTooltipOnSpots = [21];
 
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
+    final lineBarsData = [
+      LineChartBarData(
+        showingIndicators: showingTooltipOnSpots,
+        spots: allSpots,
+        isCurved: false,
+        barWidth: 3,
+        belowBarData: BarAreaData(
+          show: true,
+          gradient: LinearGradient(colors: [
+            TColor.primaryColor2.withOpacity(0.4),
+            TColor.primaryColor1.withOpacity(0.1),
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+        ),
+        dotData: const FlDotData(show: false),
+        gradient: LinearGradient(
+          colors: TColor.primaryG,
+        ),
+      ),
+    ];
+
+    final tooltipsOnBar = lineBarsData[0];
 
     return Scaffold(
       appBar: AppBar(
@@ -114,32 +186,45 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                       ),
                       Container(
                           height: 30,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: TColor.primaryG),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: TColor.white,
+                        border: Border.all(color: TColor.primaryColor1),
+                        borderRadius: BorderRadius.circular(15)
+                      ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
-                              items: ["Weekly", "Monthly"]
-                                  .map((name) => DropdownMenuItem(
-                                        value: name,
-                                        child: Text(
-                                          name,
-                                          style: TextStyle(
-                                              color: TColor.gray, fontSize: 14),
-                                        ),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {},
-                              icon:
-                                  Icon(Icons.expand_more, color: TColor.white),
-                              hint: Text(
-                                "Weekly",
-                                textAlign: TextAlign.center,
+                              items: ["Неделя", "Месяц"]
+                            .map((name) => DropdownMenuItem(
+                              value: name,
+                              child: Text(
+                                name,
                                 style: TextStyle(
-                                    color: TColor.white, fontSize: 12),
+                                  color: TColor.primaryColor1,
+                                  fontSize: 14,
+                                ),
                               ),
+                            ))
+                            .toList(),
+                            onChanged: (value) {
+                            setState(() {
+                              selectedValue = value.toString();
+                              isWeekSelected = value == "Неделя"; // Установка флага
+                            });
+                            // Обновление состояния после изменения значения
+                            setState(() {
+                              touchedIndex = -1; // Сброс индекса при изменении выбранного значения
+                            });
+                          },
+                          icon: Icon(Icons.expand_more, color: TColor.primaryColor1),
+                          hint: Text(
+                            "Неделя",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: TColor.white,
+                              fontSize: 12,
+                            ),
+                          ),
                             ),
                           )),
                     ],
@@ -153,32 +238,32 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                       width: double.maxFinite,
                       child: LineChart(
                         LineChartData(
-                          // showingTooltipIndicators:
-                          //     showingTooltipOnSpots.map((index) {
-                          //   return ShowingTooltipIndicators([
-                          //     LineBarSpot(
-                          //       tooltipsOnBar,
-                          //       lineBarsData.indexOf(tooltipsOnBar),
-                          //       tooltipsOnBar.spots[index],
-                          //     ),
-                          //   ]);
-                          // }).toList(),
+                          showingTooltipIndicators:
+                              showingTooltipOnSpots.map((index) {
+                            return ShowingTooltipIndicators([
+                              LineBarSpot(
+                                tooltipsOnBar,
+                                lineBarsData.indexOf(tooltipsOnBar),
+                                tooltipsOnBar.spots[index],
+                              ),
+                            ]);
+                          }).toList(),
                           lineTouchData: LineTouchData(
                             enabled: true,
                             handleBuiltInTouches: false,
                             touchCallback: (FlTouchEvent event,
                                 LineTouchResponse? response) {
-                              // if (response == null || response.lineBarSpots == null) {
-                              //   return;
-                              // }
-                              // if (event is FlTapUpEvent) {
-                              //   final spotIndex =
-                              //       response.lineBarSpots!.first.spotIndex;
-                              //   showingTooltipOnSpots.clear();
-                              //   setState(() {
-                              //     showingTooltipOnSpots.add(spotIndex);
-                              //   });
-                              // }
+                              if (response == null || response.lineBarSpots == null) {
+                                return;
+                              }
+                              if (event is FlTapUpEvent) {
+                                final spotIndex =
+                                    response.lineBarSpots!.first.spotIndex;
+                                showingTooltipOnSpots.clear();
+                                setState(() {
+                                  showingTooltipOnSpots.add(spotIndex);
+                                });
+                              }
                             },
                             mouseCursorResolver: (FlTouchEvent event,
                                 LineTouchResponse? response) {
@@ -192,7 +277,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                                 List<int> spotIndexes) {
                               return spotIndexes.map((index) {
                                 return TouchedSpotIndicatorData(
-                                  FlLine(
+                                  const FlLine(
                                     color: Colors.transparent,
                                   ),
                                   FlDotData(
@@ -231,8 +316,8 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                           maxY: 110,
                           titlesData: FlTitlesData(
                               show: true,
-                              leftTitles: AxisTitles(),
-                              topTitles: AxisTitles(),
+                              leftTitles: const AxisTitles(),
+                              topTitles: const AxisTitles(),
                               bottomTitles: AxisTitles(
                                 sideTitles: bottomTitles,
                               ),
@@ -280,7 +365,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                               fontWeight: FontWeight.w700),
                         ),
                         SizedBox(
-                          width: 70,
+                          width: 90,
                           height: 25,
                           child: RoundButton(
                             title: "Check",
@@ -298,68 +383,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                   SizedBox(
                     height: media.width * 0.05,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Today Meals",
-                        style: TextStyle(
-                            color: TColor.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      Container(
-                          height: 30,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: TColor.primaryG),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              items: [
-                                "Breakfast",
-                                "Lunch",
-                                "Dinner",
-                                "Snack",
-                                "Dessert"
-                              ]
-                                  .map((name) => DropdownMenuItem(
-                                        value: name,
-                                        child: Text(
-                                          name,
-                                          style: TextStyle(
-                                              color: TColor.gray, fontSize: 14),
-                                        ),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {},
-                              icon:
-                                  Icon(Icons.expand_more, color: TColor.white),
-                              hint: Text(
-                                "Breakfast",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: TColor.white, fontSize: 12),
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: media.width * 0.05,
-                  ),
-                  ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: todayMealArr.length,
-                      itemBuilder: (context, index) {
-                        var mObj = todayMealArr[index] as Map? ?? {};
-                        return TodayMealRow(
-                          mObj: mObj,
-                        );
-                      }),
+                
                 ],
               ),
             ),
@@ -401,10 +425,6 @@ class _MealPlannerViewState extends State<MealPlannerView> {
     );
   }
 
-  List<LineChartBarData> get lineBarsData1 => [
-        lineChartBarData1_1,
-      ];
-
   LineChartBarData get lineChartBarData1_1 => LineChartBarData(
         isCurved: true,
         gradient: LinearGradient(colors: [
@@ -433,6 +453,37 @@ class _MealPlannerViewState extends State<MealPlannerView> {
           FlSpot(7, 35),
         ],
       );
+
+
+      LineChartBarData get lineChartBarData1_2_monthly => LineChartBarData(
+        isCurved: true,
+        gradient: LinearGradient(colors: [
+          TColor.secondaryColor2,
+          TColor.secondaryColor1,
+        ]),
+        barWidth: 2,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
+          getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+            radius: 3,
+            color: Colors.white,
+            strokeWidth: 1,
+            strokeColor: TColor.secondaryColor1,
+          ),
+        ),
+        belowBarData: BarAreaData(show: false),
+        spots: const [
+          FlSpot(1, 50),
+          FlSpot(2, 85),
+          FlSpot(3, 35),
+          FlSpot(4, 73),
+          FlSpot(5, 42),
+          FlSpot(6, 55),
+          FlSpot(7, 20),
+        ],
+      );
+
 
   SideTitles get rightTitles => SideTitles(
         getTitlesWidget: rightTitleWidgets,
@@ -489,25 +540,25 @@ class _MealPlannerViewState extends State<MealPlannerView> {
     Widget text;
     switch (value.toInt()) {
       case 1:
-        text = Text('Sun', style: style);
+        text = Text('1', style: style);
         break;
       case 2:
-        text = Text('Mon', style: style);
+        text = Text('2', style: style);
         break;
       case 3:
-        text = Text('Tue', style: style);
+        text = Text('3', style: style);
         break;
       case 4:
-        text = Text('Wed', style: style);
+        text = Text('4', style: style);
         break;
       case 5:
-        text = Text('Thu', style: style);
+        text = Text('5', style: style);
         break;
       case 6:
-        text = Text('Fri', style: style);
+        text = Text('6', style: style);
         break;
       case 7:
-        text = Text('Sat', style: style);
+        text = Text('7', style: style);
         break;
       default:
         text = const Text('');
