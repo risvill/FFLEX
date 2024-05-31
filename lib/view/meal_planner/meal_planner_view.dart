@@ -186,15 +186,16 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                       ),
                       Container(
                           height: 30,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: TColor.white,
-                        border: Border.all(color: TColor.primaryColor1),
-                        borderRadius: BorderRadius.circular(15)
-                      ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: TColor.white,
+                            border: Border.all(color: TColor.primaryColor1),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              items: ["Неделя", "Месяц"]
+                        child: DropdownButton(
+                          value: selectedValue,
+                          items: ["Неделя", "Месяц"]
                             .map((name) => DropdownMenuItem(
                               value: name,
                               child: Text(
@@ -206,7 +207,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                               ),
                             ))
                             .toList(),
-                            onChanged: (value) {
+                          onChanged: (value) {
                             setState(() {
                               selectedValue = value.toString();
                               isWeekSelected = value == "Неделя"; // Установка флага
@@ -225,8 +226,10 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                               fontSize: 12,
                             ),
                           ),
-                            ),
-                          )),
+                          
+                        ),
+                      ),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -344,42 +347,6 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                           ),
                         ),
                       )),
-                  SizedBox(
-                    height: media.width * 0.05,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: TColor.primaryColor2.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Daily Meal Schedule",
-                          style: TextStyle(
-                              color: TColor.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(
-                          width: 90,
-                          height: 25,
-                          child: RoundButton(
-                            title: "Check",
-                            type: RoundButtonType.bgGradient,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            onPressed: () {
-                               
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
                   SizedBox(
                     height: media.width * 0.05,
                   ),

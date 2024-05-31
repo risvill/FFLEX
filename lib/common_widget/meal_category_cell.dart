@@ -1,4 +1,5 @@
 import 'package:fflex/common_widget/round_button.dart';
+import 'package:fflex/view/meal_planner/category_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '../common/colo_extension.dart';
@@ -56,6 +57,25 @@ class MealCategoryCell extends StatelessWidget {
                   color: TColor.black,
                   fontSize: 12,
                   fontWeight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: SizedBox(
+              width: 90,
+              height: 25,
+              child: RoundButton(
+                  fontSize: 12,
+                  type: isEvent
+                      ? RoundButtonType.bgGradient
+                      : RoundButtonType.bgSGradient,
+                  title: "Select",
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryListView() ));
+                  }),
             ),
           ),
         

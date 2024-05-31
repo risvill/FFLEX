@@ -121,8 +121,8 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                     Transform.scale(
                       scale: 1.25,
                       child: Container(
-                        width: media.width * 0.55,
-                        height: media.width * 0.55,
+                        width: media.width * 0.50,
+                        height: media.width * 0.50,
                         decoration: BoxDecoration(
                           color: Colors.white24,
                           borderRadius:
@@ -136,8 +136,8 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                         alignment: Alignment.bottomCenter,
                         child: Image.asset(
                           widget.dObj["b_image"].toString(),
-                          width: media.width * 0.50,
-                          height: media.width * 0.50,
+                          width: media.width * 0.45,
+                          height: media.width * 0.45,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -418,22 +418,6 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                     ],
                   ),
                 ),
-                SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: RoundButton(
-                            title: "Add to ${widget.mObj["name"]} Meal",
-                            onPressed: () {
-                             
-                            }),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
