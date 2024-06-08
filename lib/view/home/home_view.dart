@@ -1,17 +1,19 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:fflex/common_widget/round_button.dart';
 import 'package:fflex/common_widget/workout_row.dart';
+import 'package:fflex/env.sample.dart';
 import 'package:fflex/view/home/activity_traker_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import '../../common/colo_extension.dart';
-
+import 'package:http/http.dart' as http;
 import 'finished_workout_view.dart';
 import 'notification_view.dart';
 
@@ -98,6 +100,12 @@ class _HomeViewState extends State<HomeView> {
     {"title": "16:00 - сейчас", "subtitle": "900мл"},
   ];
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -143,6 +151,7 @@ class _HomeViewState extends State<HomeView> {
                           "Добро пожаловать,",
                           style: TextStyle(color: TColor.gray, fontSize: 12),
                         ),
+                        
                         Text(
                           "Сабрина Байдаулетова",
                           style: TextStyle(
@@ -152,6 +161,10 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ],
                     ),
+                    
+
+        
+                    
                     IconButton(
                         onPressed: () {
                           // Navigator.push(
@@ -1030,6 +1043,8 @@ class _HomeViewState extends State<HomeView> {
 
 }
 
+
+
   List<PieChartSectionData> showingSections() {
     return List.generate(
       2,
@@ -1252,3 +1267,5 @@ class _HomeViewState extends State<HomeView> {
       child: text,
     );
   }
+
+  

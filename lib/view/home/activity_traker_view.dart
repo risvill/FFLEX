@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:fflex/common_widget/today_target_cell_steps.dart';
+import 'package:fflex/models/activity.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -30,22 +33,16 @@ class _ActivityTrackerViewState extends State<ActivityTrackerView> {
     // Добавьте остальные дни месяца
   ];  
 
-  List latestArr = [
-    {
-      "image": "assets/img/pic_4.png",
-      "title": "Пить 300 мл воды",
-      "time": "Около 1 минуты назад"
-    },
-    {
-      "image": "assets/img/pic_5.png",
-      "title": "Ешь перекус (Fitbar)",
-      "time": "Около 3 часов назад"
-    },
+  final List<String> images = [
+    "assets/img/pic_4.png",
+    "assets/img/pic_5.png",
   ];
 
   String waterIntake = '8';
   String steps = '2400';
   String dropdownValue = 'мл';
+
+  Activity activityService = Activity();
 
   @override
   Widget build(BuildContext context) {
@@ -480,15 +477,78 @@ class _ActivityTrackerViewState extends State<ActivityTrackerView> {
                   )
                 ],
               ),
-              ListView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: latestArr.length,
-                  itemBuilder: (context, index) {
-                    var wObj = latestArr[index] as Map? ?? {};
-                    return LatestActivityRow(wObj: wObj);
-                  }),
+              FutureBuilder<List>(
+                future: activityService.getAllActivity(),
+                builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                print(snapshot);
+                if (snapshot.hasData) {
+                  var random = Random();
+                  return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length, // Используем длину данных из snapshot
+                    itemBuilder: (context, i) {
+                      var activity = snapshot.data![i];
+                      var randomImage = images[random.nextInt(images.length)];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Image.asset(
+                                randomImage,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    activity["title"],
+                                    style: TextStyle(
+                                      color: TColor.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    activity["subtitle"],
+                                    style: TextStyle(
+                                      color: TColor.gray,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Если вам нужно изображение для кнопки, вы можете также сделать его случайным
+                            // IconButton(
+                            //   onPressed: () {},
+                            //   icon: Image.asset(
+                            //     randomImage,
+                            //     width: 12,
+                            //     height: 12,
+                            //     fit: BoxFit.contain,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Text('No Data');
+                }
+              },
+            ),
               SizedBox(
                 height: media.width * 0.1,
               ),

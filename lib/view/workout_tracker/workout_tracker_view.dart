@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:fflex/common/colo_extension.dart';
 import 'package:fflex/common_widget/what_train_row.dart';
+import 'package:fflex/models/workout.dart';
 import 'package:fflex/view/home/activity_traker_view.dart';
 import 'package:fflex/view/workout_tracker/workout_detail_view.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -48,7 +52,28 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
       "time": "20 мин"
     }
   ];
+  final List<String> images = [
+    "assets/media/Workout1.png",
+    "assets/media/Workout2.png",
+    "assets/media/Workout3.png",
+    "assets/media/Workout4.png",
+    "assets/media/Workout5.png",
+    "assets/media/Workout6.png",
+    "assets/media/Workout7.png",
+  ];
+  late Random random;
+  List<int> chosenIndexes = [];
+  @override
+  void initState() {
+    super.initState();
+    random = Random();
+    
+    
+    // Запускаем таймер, который каждые 2 секунды обновляет индекс изображения
+    
+  }
 
+  Workout workoutService = Workout();
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -127,20 +152,6 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
                     lineTouchData: LineTouchData(
                       enabled: true,
                       handleBuiltInTouches: false,
-                      // touchCallback:
-                      //     (FlTouchEvent event, LineTouchResponse? response) {
-                      //   if (response == null || response.lineBarSpots == null) {
-                      //     return;
-                      //   }
-                      //   if (event is FlTapUpEvent) {
-                      //     final spotIndex =
-                      //         response.lineBarSpots!.first.spotIndex;
-                      //     showingTooltipOnSpots.clear();
-                      //     setState(() {
-                      //       showingTooltipOnSpots.add(spotIndex);
-                      //     });
-                      //   }
-                      // },
                       mouseCursorResolver:
                           (FlTouchEvent event, LineTouchResponse? response) {
                         if (response == null || response.lineBarSpots == null) {
@@ -334,19 +345,132 @@ class _WorkoutTrackerViewState extends State<WorkoutTrackerView> {
                       ),
                     ],
                   ),
-                  ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: whatArr.length,
-                      itemBuilder: (context, index) {
-                        var wObj = whatArr[index] as Map? ?? {};
-                        return InkWell(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  WorkoutDetailView( dObj: wObj, ) ));
+                  FutureBuilder<List>(
+                    future: workoutService.getAllWorkout(), 
+                    builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                      // print(snapshot);  
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, i) {
+                            int getRandomIndex(int maxLength) {
+                              int index;
+                              do {
+                                index = random.nextInt(maxLength);
+                              } while (chosenIndexes.contains(index)); // Проверяем, что индекс еще не выбран
+                              chosenIndexes.add(index); // Добавляем индекс в список выбранных
+                              return index;
+                            }
+                            int randomIndex = getRandomIndex(images.length);
+                            var workout = snapshot.data![i];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    TColor.primaryColor2.withOpacity(0.3),
+                                    TColor.primaryColor1.withOpacity(0.3)
+                                  ]),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            workout['title'],
+                                            style: TextStyle(
+                                                color: TColor.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            "${workout["minute"]} минут | ${workout["calories"] } калорий" ,
+                                            style: TextStyle(
+                                              color: TColor.gray,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          SizedBox(
+                                            width: 100,
+                                            height: 30,
+                                            child: RoundButton(
+                                                title: "Начать...",
+                                                fontSize: 13,
+                                                type: RoundButtonType.textGradient,
+                                                elevation:0.05,
+                                                fontWeight: FontWeight.w500,
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => WorkoutDetailView(dObj: workout),
+                                                    ),
+                                                  );
+                                                },
+                                          )
+                                          )
+                                        ]
+
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.6),
+                                            borderRadius: BorderRadius.circular(40),
+                                          ),
+                                        ),
+                                        
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(30),
+                                          child: Image.asset(
+                                            images[randomIndex],
+                                            width: 90,
+                                            height: 90,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ));
+                            
                           },
-                          child:  WhatTrainRow(wObj: wObj) );
-                      }),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('No Data'),
+                        );
+                      }
+                    },
+                  ),
+                  
                   SizedBox(
                     height: media.width * 0.1,
                   ),

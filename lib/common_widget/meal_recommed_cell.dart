@@ -71,6 +71,8 @@ class MealRecommendCell extends StatelessWidget {
                       : RoundButtonType.bgSGradient,
                   title: "View",
                   onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FoodInfoDetailsView(mObj: fObj, dObj: fObj) ) );
+
                   }),
             ),
           ),

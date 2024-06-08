@@ -1,4 +1,5 @@
 import 'package:fflex/common_widget/meal_recommed_cell.dart';
+import 'package:fflex/view/meal_planner/category_list_view.dart';
 import 'package:fflex/view/meal_planner/food_info_detail_view.dart';
 import 'package:flutter/material.dart';
 
@@ -20,72 +21,120 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
 
   List categoryArr = [
     {
-      "name": "Salad",
+      "name": "Салаты",
       "image": "assets/img/c_1.png",
     },
     {
-      "name": "Cake",
+      "name": "Выпечка",
       "image": "assets/img/c_2.png",
     },
     {
-      "name": "Pie",
+      "name": "Десерты",
       "image": "assets/img/c_3.png",
     },
     {
-      "name": "Smoothies",
+      "name": "Фруктовые",
       "image": "assets/img/c_4.png",
     },
     {
-      "name": "Salad",
+      "name": "Говяжие",
       "image": "assets/img/c_1.png",
     },
     {
-      "name": "Cake",
+      "name": "Куриные",
       "image": "assets/img/c_2.png",
     },
     {
-      "name": "Pie",
+      "name": "Овощные",
       "image": "assets/img/c_3.png",
     },
     {
-      "name": "Smoothies",
+      "name": "Закуски",
       "image": "assets/img/c_4.png",
     },
   ];
 
   List popularArr = [
-    {
-      "name": "Blueberry Pancake",
-      "image": "assets/img/f_1.png",
-      "b_image":"assets/img/pancake_1.png",
-      "size": "Medium",
-      "time": "30mins",
-      "kcal": "230kCal"
-    },
-    {
-      "name": "Salmon Nigiri",
-      "image": "assets/img/f_2.png",
-       "b_image": "assets/img/nigiri.png",
-      "size": "Medium",
-      "time": "20mins",
-      "kcal": "120kCal"
-    },
-  ];
+  {
+    "name": "Черничный панкейк",
+    "image": "assets/img/f_1.png",
+    "size": "Средний",
+    "time": "1 час",
+    "kcal": "230 ккал"
+  },
+  {
+    "name": "Суши Тиряяма",
+    "image": "assets/img/f_2.png",
+    "size": "Средний",
+    "time": "30 минут",
+    "kcal": "120 ккал"
+  },
+  {
+    "name": "Паста Карбонара",
+    "image": "assets/img/m_4.png",
+    "size": "Средний",
+    "time": "40 минут",
+    "kcal": "400 ккал"
+  },
+  {
+    "name": "Куриные крылышки BBQ",
+    "image": "assets/img/m_3.png",
+    "size": "Средний",
+    "time": "1 час 10 минут",
+    "kcal": "450 ккал"
+  },
+  {
+    "name": "Бургер с говядиной",
+    "image": "assets/img/m_2.png",
+    "size": "Средний",
+    "time": "30 минут",
+    "kcal": "600 ккал"
+  },
+  {
+    "name": "Морковный пирог",
+    "image": "assets/img/m_1.png",
+    "size": "Средний",
+    "time": "1 час 30 минут",
+    "kcal": "350 ккал"
+  },
+  {
+    "name": "Куриный суп",
+    "image": "assets/img/sugar.png",
+    "size": "Легко",
+    "time": "45 минут",
+    "kcal": "200 ккал"
+  },
+  {
+    "name": "Шоколадный торт",
+    "image": "assets/img/rd_1.png",
+    "size": "Трудно",
+    "time": "2 часа",
+    "kcal": "500 ккал"
+  },
+  {
+    "name": "Салат с тунцом",
+    "image": "assets/img/salad.png",
+    "size": "Легко",
+    "time": "15 минут",
+    "kcal": "180 ккал"
+  },
+];
+
 
   List recommendArr = [
     {
-      "name": "Honey Pancake",
+      "name": "Сладкие блины",
       "image": "assets/img/rd_1.png",
-      "size": "Easy",
-      "time": "30mins",
-      "kcal": "180kCal"
+      "size": "Легко",
+      "time": "20 минут",
+      "kcal": "180 ккал"
     },
     {
-      "name": "Canai Bread",
+      "name": "Обжаренная курица",
       "image": "assets/img/m_4.png",
-      "size": "Easy",
-      "time": "20mins",
-      "kcal": "230kCal"
+      "size": "Легко",
+      "time": "1 час",
+      "kcal": "230 ккал"
     },
   ];
 
@@ -174,7 +223,7 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                           width: 25,
                           height: 25,
                         ),
-                        hintText: "Search Pancake"),
+                        hintText: "Найти салаты..."),
                   )),
                 ],
               ),
@@ -188,7 +237,7 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Category",
+                    "Категории",
                     style: TextStyle(
                         color: TColor.black,
                         fontSize: 16,
@@ -205,9 +254,14 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                   itemCount: categoryArr.length,
                   itemBuilder: (context, index) {
                     var cObj = categoryArr[index] as Map? ?? {};
-                    return MealCategoryCell(
-                      cObj: cObj,
-                      index: index,
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryListView(eObj: cObj, mObj: cObj,) ) );
+                      },
+                      child: MealCategoryCell(
+                        cObj: cObj,
+                        index: index,
+                      ),
                     );
                   }),
             ),
@@ -217,7 +271,7 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Recommendation\nfor Diet",
+                "Рекомендации\nдля ПП",
                 style: TextStyle(
                     color: TColor.black,
                     fontSize: 16,
@@ -232,10 +286,15 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                   itemCount: recommendArr.length,
                   itemBuilder: (context, index) {
                     var fObj = recommendArr[index] as Map? ?? {};
-                    return MealRecommendCell(
+                    return InkWell(
+                    onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FoodInfoDetailsView(mObj: fObj, dObj: fObj) ) );
+                    },
+                    child: MealRecommendCell(
                       fObj: fObj,
                       index: index,
-                    );
+                    ),
+                  );
                   }),
             ),
             SizedBox(
@@ -244,7 +303,7 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Popular",
+                "Популярное",
                 style: TextStyle(
                     color: TColor.black,
                     fontSize: 16,
@@ -259,17 +318,9 @@ class _MealFoodDetailsViewState extends State<MealFoodDetailsView> {
                 itemBuilder: (context, index) {
                   var fObj = popularArr[index] as Map? ?? {};
                   return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FoodInfoDetailsView(
-                            dObj: fObj,
-                            mObj: widget.eObj,
-                          ),
-                        ),
-                      );
-                    },
+                    onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FoodInfoDetailsView(mObj: fObj, dObj: fObj) ) );
+                      },
                     child: PopularMealRow(
                       mObj: fObj,
                     ),

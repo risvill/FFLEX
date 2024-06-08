@@ -1,5 +1,4 @@
 import 'package:fflex/common_widget/foot_step_detail_row.dart';
-import 'package:fflex/common_widget/round_button.dart';
 import 'package:fflex/common/colo_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
@@ -16,25 +15,25 @@ class FoodInfoDetailsView extends StatefulWidget {
 
 class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
   List nutritionArr = [
-    {"image": "assets/img/burn.png", "title": "180kCal"},
-    {"image": "assets/img/egg.png", "title": "30g fats"},
-    {"image": "assets/img/proteins.png", "title": "20g proteins"},
-    {"image": "assets/img/carbo.png", "title": "50g carbo"},
+    {"image": "assets/img/burn.png", "title": "180ккал"},
+    {"image": "assets/img/egg.png", "title": "30г углеводов"},
+    {"image": "assets/img/proteins.png", "title": "20г белков"},
+    {"image": "assets/img/carbo.png", "title": "50g жиров"},
   ];
 
   List ingredientsArr = [
     {
       "image": "assets/img/flour.png",
-      "title": "Wheat Flour",
-      "value": "100grm"
+      "title": "Мука",
+      "value": "100грамм"
     },
-    {"image": "assets/img/sugar.png", "title": "Sugar", "value": "3 tbsp"},
+    {"image": "assets/img/sugar.png", "title": "Сахар", "value": "3 ст ложки"},
     {
       "image": "assets/img/baking_soda.png",
-      "title": "Baking Soda",
-      "value": "2tsp"
+      "title": "Пищевая сода",
+      "value": "2ст ложки"
     },
-    {"image": "assets/img/eggs.png", "title": "Eggs", "value": "2 items"},
+    {"image": "assets/img/eggs.png", "title": "Яйца", "value": "2 шт"},
   ];
 
   List stepArr = [
@@ -135,7 +134,7 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: Image.asset(
-                          widget.dObj["b_image"].toString(),
+                          widget.dObj["image"].toString(),
                           width: media.width * 0.45,
                           height: media.width * 0.45,
                           fit: BoxFit.contain,
@@ -192,11 +191,11 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                                     widget.dObj["name"].toString(),
                                     style: TextStyle(
                                         color: TColor.black,
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    "by James Ruth",
+                                    "из книги рецептов",
                                     style: TextStyle(
                                         color: TColor.gray, fontSize: 12),
                                   ),
@@ -213,10 +212,10 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          "Nutrition",
+                          "Состав:",
                           style: TextStyle(
                               color: TColor.black,
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w700),
                         ),
                       ),
@@ -272,10 +271,10 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          "Descriptions",
+                          "Описание",
                           style: TextStyle(
                               color: TColor.black,
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w700),
                         ),
                       ),
@@ -285,12 +284,12 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: ReadMoreText(
-                          'Pancakes are some people\'s favorite breakfast, who doesn\'t like pancakes? Especially with the real honey splash on top of the pancakes, of course everyone loves that! besides being Pancakes are some people\'s favorite breakfast, who doesn\'t like pancakes? Especially with the real honey splash on top of the pancakes, of course everyone loves that! besides being',
+                          'Такой простой рецепт\ черничных панкейков возник у меня спонтанно, \- я часто люблю к панкейкам добавлять орешки, но вот как-то кинулась\ - а их нет! Зато была черника. Сок, конечно, \она пускать любит, но даже с фиолетовыми разводами \панкейки выглядят очень аппетитно! Попробуйте, вкусно!',
                           trimLines: 4,
                           colorClickableText: TColor.black,
                           trimMode: TrimMode.Line,
-                          trimCollapsedText: ' Read More ...',
-                          trimExpandedText: ' Read Less',
+                          trimCollapsedText: ' Подробнее ...',
+                          trimExpandedText: ' Скрыть',
                           style: TextStyle(
                             color: TColor.gray,
                             fontSize: 12,
@@ -308,16 +307,16 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Ingredients That You\nWill Need",
+                              "Ингридиенты:",
                               style: TextStyle(
                                   color: TColor.black,
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w700),
                             ),
                             TextButton(
                               onPressed: () {},
                               child: Text(
-                                "${stepArr.length} Items",
+                                "${stepArr.length} Шт",
                                 style:
                                     TextStyle(color: TColor.gray, fontSize: 12),
                               ),
@@ -381,7 +380,7 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Step by Step",
+                              "Пошаговый план",
                               style: TextStyle(
                                   color: TColor.black,
                                   fontSize: 16,
@@ -390,7 +389,7 @@ class _FoodInfoDetailsViewState extends State<FoodInfoDetailsView> {
                             TextButton(
                               onPressed: () {},
                               child: Text(
-                                "${stepArr.length} Steps",
+                                "${stepArr.length} Шаг",
                                 style:
                                     TextStyle(color: TColor.gray, fontSize: 12),
                               ),

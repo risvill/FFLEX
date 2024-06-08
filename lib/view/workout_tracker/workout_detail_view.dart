@@ -1,6 +1,7 @@
 import 'package:fflex/common_widget/exercises_set_section.dart';
 import 'package:fflex/common_widget/icon_title_next_row.dart';
 import 'package:fflex/common/colo_extension.dart';
+import 'package:fflex/models/workout.dart';
 import 'package:fflex/view/workout_tracker/exercises_stpe_details.dart';
 import 'package:flutter/material.dart';
 
@@ -74,10 +75,13 @@ class _WorkoutDetailViewState extends State<WorkoutDetailView> {
   ];
 
   String selectedDifficulty = "Начинающий";
+  Workout workoutService = Workout();
 
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
+    final workout = widget.dObj;
+
     return Container(
       decoration:
           BoxDecoration(gradient: LinearGradient(colors: TColor.primaryG)),
@@ -171,31 +175,37 @@ class _WorkoutDetailViewState extends State<WorkoutDetailView> {
                             color: TColor.gray.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(3)),
                       ),
-                      SizedBox(
-                        height: media.width * 0.05,
+                      const SizedBox(
+                        height: 4
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.dObj["title"].toString(),
+                          Column(
+                            children: [
+                              Text(
+                                workout['title'],
+                                style: TextStyle(
+                                    color: TColor.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.1),
+                                child: Text(
+                                  "${workout["minute"]} минут | ${workout["calories"]} калорий | ${workout["numberOfPromotions"]} раза",
                                   style: TextStyle(
-                                      color: TColor.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
+                                    color: TColor.gray,
+                                    fontSize: 12,
+                                  ),
                                 ),
-                                Text(
-                                  "${widget.dObj["exercises"].toString()} | ${widget.dObj["time"].toString()} | 320 Калорий",
-                                  style: TextStyle(
-                                      color: TColor.gray, fontSize: 12),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                          
                           TextButton(
                             onPressed: () {},
                             child: Image.asset(
@@ -204,20 +214,11 @@ class _WorkoutDetailViewState extends State<WorkoutDetailView> {
                               height: 15,
                               fit: BoxFit.contain,
                             ),
-                          )
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: media.width * 0.05,
-                      ),
-                      IconTitleNextRow(
-                          icon: "assets/img/time.png",
-                          title: "Расписание тренировок",
-                          time: "5/27, 09:00 ",
-                          color: TColor.primaryColor2.withOpacity(0.3),
-                          onPressed: () {
-                            
-                          }),
+
+                      
                       SizedBox(
                         height: media.width * 0.02,
                       ),
@@ -353,35 +354,36 @@ class _WorkoutDetailViewState extends State<WorkoutDetailView> {
       ),
     );
   }
+
   void _showDifficultyDialog() {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Выберите сложность"),
-          content: DropdownButton<String>(
-            value: selectedDifficulty,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedDifficulty = newValue!;
-                Navigator.of(context).pop();
-              });
-            },
-            items: <String>["Начинающий", "Средний", "Продвинутый"].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Выбрать"),
-            ),
-          ],
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Выберите сложность"),
+        content: DropdownButton<String>(
+          value: selectedDifficulty,
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedDifficulty = newValue!;
+              Navigator.of(context).pop();
+            });
+          },
+          items: <String>["Начинающий", "Средний", "Продвинутый"].map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         ),
-      );
-}
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Выбрать"),
+          ),
+        ],
+      ),
+    );
+  }
 }

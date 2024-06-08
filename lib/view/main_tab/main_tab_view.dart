@@ -1,6 +1,7 @@
 
 import 'package:fflex/common/colo_extension.dart';
 import 'package:fflex/view/home/activity_traker_view.dart';
+import 'package:fflex/view/meal_planner/meal_planner_view.dart';
 import 'package:fflex/view/workout_tracker/workout_tracker_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -21,7 +22,7 @@ class _MainTabViewState extends State<MainTabView> {
   @override
   void initState() {
     super.initState();
-    pages = [const HomeView(), const ActivityTrackerView(), const WorkoutTrackerView(), const ProfileView()];
+    pages = [const HomeView(), const MealPlannerView(), const WorkoutTrackerView(), const ProfileView()];
   }
 
   @override
@@ -51,8 +52,8 @@ class _MainTabViewState extends State<MainTabView> {
                   text: 'Домой',
                 ),
                 GButton(
-                  icon: Icons.monitor_heart,
-                  text: 'Активность',
+                  icon: Icons.restaurant_rounded,
+                  text: 'Рецепты',
                 ),
                 GButton(icon: Icons.fitness_center_rounded),
                 GButton(

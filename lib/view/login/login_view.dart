@@ -2,6 +2,7 @@
 
 import 'package:fflex/common/colo_extension.dart';
 import 'package:fflex/common_widget/round_button.dart';
+import 'package:fflex/models/signIn.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
@@ -12,23 +13,15 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  bool isCheck = false;
-  //  AuthForm({
-  //   Key?key,
-  //   required
-  // })
-  // final _formState = GlobalKey<FormState>();
-  // final FirebaseService firebaseService = FirebaseService();
-  // final TextEditingController emailController = TextEditingController();
-  // final TextEditingController passwordController = TextEditingController();
-  // bool _isPasswordVisible = false;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   void dispose() {
-    // emailController.dispose();
-    // passwordController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -37,7 +30,6 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: TColor.white,
         body: SingleChildScrollView(
           child: Form(
-            // key: _formState,
             autovalidateMode: AutovalidateMode.always,
             child: SafeArea(
               child: Container(
@@ -69,17 +61,17 @@ class _LoginViewState extends State<LoginView> {
                           borderRadius: BorderRadius.circular(15)),
                       child: TextFormField(
                         // controller: emailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Введите почту';
-                          }
-                          if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                              .hasMatch(value)) {
-                            return 'Введите корректный адрес почты';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.emailAddress,
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'Введите почту';
+                        //   }
+                        //   if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                        //       .hasMatch(value)) {
+                        //     return 'Введите корректный адрес почты';
+                        //   }
+                        //   return null;
+                        // },
+                        controller: usernameController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 15),
@@ -92,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          hintText: 'Почта',
+                          hintText: 'Логин',
                           prefixIcon: Container(
                             alignment: Alignment.center,
                             width: 20,
@@ -133,6 +125,7 @@ class _LoginViewState extends State<LoginView> {
                           borderRadius: BorderRadius.circular(15)),
                       child: TextFormField(
                         // controller: passwordController,
+                        controller: passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Введите пароль';
@@ -166,18 +159,6 @@ class _LoginViewState extends State<LoginView> {
                               color: TColor.gray,
                             ),
                           ),
-                          // suffixIcon: IconButton(
-                          //   // icon: Icon(
-                          //   //   // _isPasswordVisible
-                          //   //       // ? Icons.visibility
-                          //   //       // : Icons.visibility_off,
-                          //   // ),
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       // _isPasswordVisible = !_isPasswordVisible;
-                          //     });
-                          //   },
-                          // ),
                           hintStyle:
                               TextStyle(color: TColor.gray, fontSize: 14),
                           errorBorder: OutlineInputBorder(
@@ -216,28 +197,41 @@ class _LoginViewState extends State<LoginView> {
                     RoundButton(
                       title: "Войти",
                       onPressed: () async {
-                        // User? user = await firebaseService.onLogin(
-                        //   email: emailController.text.trim(),
-                        //   password: passwordController.text.trim(),
-                        // );
-                        // if (user != null) {
-                        //   if (mounted) {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => const MainTabView()),
-                        //     );
-                        //   }
-                        // } else {
-                        //   print("Не удалось войти, попробуйте еще раз");
-                        // }
+                        final username = usernameController.text;
+                        final password = passwordController.text;
+
+                        if (username.isEmpty || password.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Пожалуйста, заполните все поля'),
+                            ),
+                          );
+                          return;
+                        }
+
+                        // Вызываем метод postSignIn для выполнения запроса на сервер
+                        final token = 'temporary-token-for-testing'; // Временное значение токена для тестирования
+                        final userData = await postSignIn(username, password, token);
+
+                        if (userData != null) {
+                          // Вход выполнен успешно, обрабатываем данные, например, сохраняем в хранилище, и т.д.
+                          print('Вход выполнен успешно: $userData');
+
+                          // Здесь можно выполнить какие-то действия, например, переход на другой экран
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Неверное имя пользователя или пароль'),
+                            ),
+                          );
+                        }
                       },
                     ),
                     SizedBox(
                       height: media.width * 0.04,
                     ),
                     Row(
-                      // crossAxisAlignment: CrossAxisAlignment.,
+                     
                       children: [
                         Expanded(
                             child: Container(

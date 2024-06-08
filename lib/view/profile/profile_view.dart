@@ -43,7 +43,6 @@ class _ProfileViewState extends State<ProfileView> {
   String? surname;
   @override
   void initState() {
-    //   firebaseService.getDataFromDB(name!, surname!);
     super.initState();  }
 
   @override
@@ -132,12 +131,7 @@ class _ProfileViewState extends State<ProfileView> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const ActivityTrackerView(),
-                        //   ),
-                        // );
+                        
                       },
                     ),
                   )
@@ -210,11 +204,7 @@ class _ProfileViewState extends State<ProfileView> {
                           icon: iObj["image"].toString(),
                           title: iObj["name"].toString(),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PersonalDataView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalDataView() ) );
                           },
                         );
                       },
@@ -229,11 +219,7 @@ class _ProfileViewState extends State<ProfileView> {
                           icon: iObj["image"].toString(),
                           title: iObj["name"].toString(),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ActivityTrackerView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ActivityTrackerView() ) );
                           },
                         );
                       },

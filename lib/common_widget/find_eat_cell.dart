@@ -41,19 +41,19 @@ class FindEatCell extends StatelessWidget {
             children: [
               Image.asset(
                 fObj["image"].toString(),
-                width: media.width * 0.3,
-                height: media.width * 0.25,
+                width: media.width * 0.4,
+                height: media.width * 0.2,
                 fit: BoxFit.contain,
               )
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               fObj["name"],
               style: TextStyle(
                   color: TColor.black,
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500),
             ),
           ),
@@ -61,7 +61,7 @@ class FindEatCell extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               fObj["number"],
-              style: TextStyle(color: TColor.gray, fontSize: 12),
+              style: TextStyle(color: TColor.gray, fontSize: 13),
             ),
           ),
           const SizedBox(
@@ -70,7 +70,7 @@ class FindEatCell extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: SizedBox(
-              width: 90,
+              width: 100,
               height: 25,
               child: RoundButton(
                   fontSize: 12,

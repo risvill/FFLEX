@@ -1,7 +1,9 @@
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fflex/models/notifications.dart';
+import 'package:flutter/widgets.dart';
 import '../../common/colo_extension.dart';
-import '../../common_widget/notification_row.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({super.key});
@@ -11,14 +13,24 @@ class NotificationView extends StatefulWidget {
 }
 
 class _NotificationViewState extends State<NotificationView> {
-  List notificationArr = [
-    {"image": "assets/img/Workout1.png", "title": "Эй, пора обедать", "time": "Около 1 минуты назад"},
-     {"image": "assets/img/Workout2.png", "title": "Не пропустите тренировку нижней части тела", "time": "Около 3 часов назад"},
-     {"image": "assets/img/Workout3.png", "title": "Эй, давай добавим немного еды на завтрак", "time": "Около 3 часов назад"},
-     {"image": "assets/img/Workout1.png", "title": "Поздравляем, вы закончили A..", "time": "29 мая"},
-     {"image": "assets/img/Workout2.png", "title": "Эй, пора обедать", "time": "8 апреля"},
-     {"image": "assets/img/Workout3.png", "title": "Упс, вы пропустили свою трениров...", "time": "8 апреля"},
+  final List<String> images = [
+    "assets/img/c_1.png",
+    "assets/img/m_4.png",
+    "assets/img/c_3.png",
+    "assets/img/otd1.jpg",
+    "assets/img/propusk.jpg",
+    "assets/img/what_3.png",
+    "assets/img/rd_1.png",
   ];
+  late Random random;
+  List<int> chosenIndexes = [];
+  Notifications notificationsService = Notifications();
+
+  @override
+  void initState() {
+    super.initState();
+    random = Random();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +44,19 @@ class _NotificationViewState extends State<NotificationView> {
             Navigator.pop(context);
           },
           child: Container(
-            
             margin: const EdgeInsets.all(8),
             height: 40,
             width: 40,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: TColor.lightGray,
-                borderRadius: BorderRadius.circular(10)),
+              color: TColor.lightGray,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Image.asset(
               "assets/img/black_btn.png",
               width: 15,
               height: 15,
               fit: BoxFit.contain,
-              
             ),
           ),
         ),
@@ -56,17 +67,16 @@ class _NotificationViewState extends State<NotificationView> {
         ),
         actions: [
           InkWell(
-            onTap: () {
-              
-            },
+            onTap: () {},
             child: Container(
               margin: const EdgeInsets.all(8),
               height: 40,
               width: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: TColor.lightGray,
-                  borderRadius: BorderRadius.circular(10)),
+                color: TColor.lightGray,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Image.asset(
                 "assets/img/more_btn.png",
                 width: 12,
@@ -74,18 +84,107 @@ class _NotificationViewState extends State<NotificationView> {
                 fit: BoxFit.contain,
               ),
             ),
-          )
+          ),
         ],
       ),
       backgroundColor: TColor.white,
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-        itemBuilder: ((context, index) {
-          var nObj = notificationArr[index] as Map? ?? {};
-          return NotificationRow(nObj: nObj);
-      }), separatorBuilder: (context, index){
-        return Divider(color: TColor.gray.withOpacity(0.5), height: 1, );
-      }, itemCount: notificationArr.length),
+      body: FutureBuilder<List>(
+        future: notificationsService.getAllNotifications(),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          // print(snapshot);
+          if (snapshot.hasData) {
+            return Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, i) {
+                  int getRandomIndex(int maxLength) {
+                    int index;
+                    do {
+                      index = random.nextInt(maxLength);
+                    } while (chosenIndexes.contains(index)); // Проверяем, что индекс еще не выбран
+                    chosenIndexes.add(index); // Добавляем индекс в список выбранных
+                    return index;
+                  }
+                  int randomIndex = getRandomIndex(images.length);
+                  var notifications = snapshot.data![i];
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+              
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: Image.asset(
+                                      images[randomIndex],
+                                      width: 40, // Ширина изображения
+                                      height: 40, // Высота изображения
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  
+                                ),
+                                  const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      notifications["title"],
+                                      style: TextStyle(
+                                          color: TColor.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15),
+                                    ),
+                                    Text(
+                                      notifications["subtitle"],
+                                      style: TextStyle(
+                                        color: TColor.gray,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                                ],
+                              ),
+                            ),
+                            
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Image.asset(
+                          "assets/img/sub_menu.png",
+                          width: 15,
+                          height: 15,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                separatorBuilder: (context, i) => const Divider(),
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('No Data'),
+            );
+          }
+        },
+      ),
     );
   }
 }

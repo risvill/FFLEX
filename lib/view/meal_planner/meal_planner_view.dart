@@ -71,19 +71,19 @@ class _MealPlannerViewState extends State<MealPlannerView> {
 
   List findEatArr = [
     {
-      "name": "Breakfast",
+      "name": "Завтрак",
       "image": "assets/img/m_3.png",
-      "number": "120+ Foods"
+      "number": "15+ рецептов"
     },
     {
-      "name": "Lunch", 
+      "name": "Обед", 
       "image": "assets/img/m_4.png", 
-      "number": "130+ Foods"
+      "number": "10+ рецептов"
     },
     {
-      "name": "Dinner", 
+      "name": "Ужин", 
       "image": "assets/img/apple_pie.png", 
-      "number": "140+ Foods"
+      "number": "5+ рецептов"
     },
   ];
     List<int> showingTooltipOnSpots = [21];
@@ -139,7 +139,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
           ),
         ),
         title: Text(
-          "Meal Planner",
+          "Рецепты",
           style: TextStyle(
               color: TColor.black, fontSize: 16, fontWeight: FontWeight.w700),
         ),
@@ -178,7 +178,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Meal Nutritions",
+                        "График нутриентов",
                         style: TextStyle(
                             color: TColor.black,
                             fontSize: 16,
@@ -303,7 +303,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                                   (List<LineBarSpot> lineBarsSpot) {
                                 return lineBarsSpot.map((lineBarSpot) {
                                   return LineTooltipItem(
-                                    "${lineBarSpot.x.toInt()} mins ago",
+                                    "${lineBarSpot.x.toInt()} минут назад",
                                     const TextStyle(
                                       color: Colors.white,
                                       fontSize: 10,
@@ -357,15 +357,16 @@ class _MealPlannerViewState extends State<MealPlannerView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Find Something to Eat",
+                "Здесь ты найдешь все!",
                 style: TextStyle(
                     color: TColor.black,
                     fontSize: 16,
-                    fontWeight: FontWeight.w700),
+                    fontWeight: FontWeight.w700,
+                    )
               ),
             ),
             SizedBox(
-              height: media.width * 0.55,
+              height: media.width * 0.5,
               child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   scrollDirection: Axis.horizontal,

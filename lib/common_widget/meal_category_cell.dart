@@ -43,10 +43,14 @@ class MealCategoryCell extends StatelessWidget {
           
               child: Image.asset(
                   cObj["image"].toString(),
-                  width: 35,
-                  height: 35,
+                  width: 40,
+                  height: 40,
                   fit: BoxFit.contain,
                 ),),
+          ),
+        
+          const SizedBox(
+            height: 15,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
@@ -59,26 +63,6 @@ class MealCategoryCell extends StatelessWidget {
                   fontWeight: FontWeight.w500),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: SizedBox(
-              width: 90,
-              height: 25,
-              child: RoundButton(
-                  fontSize: 12,
-                  type: isEvent
-                      ? RoundButtonType.bgGradient
-                      : RoundButtonType.bgSGradient,
-                  title: "Select",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryListView() ));
-                  }),
-            ),
-          ),
-        
         ],
       ),
     );
