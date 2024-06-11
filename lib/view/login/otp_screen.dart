@@ -127,32 +127,36 @@ class _OtpScreenState extends State<OtpScreen> {
    
             
           RoundButton(
-                  title: "Подтвердить", onPressed: () async {
-              if (await widget.myauth.verifyOTP(
-                      otp: otp1Controller.text +
-                          otp2Controller.text +
-                          otp3Controller.text +
-                          otp4Controller.text) ==
-                  true) {
-                // firebaseService.onRegister(
-                //   email: widget.email,
-                //   password: widget.password,
-                // );
+  title: "Подтвердить",
+  onPressed: () async {
+    bool isOTPVerified = await widget.myauth.verifyOTP(
+      otp: otp1Controller.text +
+          otp2Controller.text +
+          otp3Controller.text +
+          otp4Controller.text,
+    );
 
-                // ignore: use_build_context_synchronously
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CompleteProfileView()));
-                //}
-              } else {
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Ошибка"),
-                ));
-              }
-            },
-            ),
+    if (isOTPVerified) {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CompleteProfileView(),
+          ),
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Ошибка! Повторите попытку заново"),
+          ),
+        );
+      }
+    }
+  },
+),
+
           
         ],
       ),

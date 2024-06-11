@@ -1,14 +1,19 @@
 import 'package:fflex/common/colo_extension.dart';
+import 'package:fflex/common_widget/on_boarding_page.dart';
 import 'package:fflex/view/home/activity_traker_view.dart';
 import 'package:fflex/view/home/home_view.dart';
 import 'package:fflex/view/home/notification_view.dart';
+import 'package:fflex/view/login/complete_profile_view.dart';
 import 'package:fflex/view/login/login_view.dart';
+import 'package:fflex/view/login/signup_view.dart';
 import 'package:fflex/view/login/welcome_view.dart';
 import 'package:fflex/view/main_tab/main_tab_view.dart';
 import 'package:fflex/view/meal_planner/food_info_detail_view.dart';
 import 'package:fflex/view/meal_planner/meal_food_detail_view.dart';
 import 'package:fflex/view/meal_planner/meal_planner_view.dart';
+import 'package:fflex/view/on_boarding/on_boarding_view.dart';
 import 'package:fflex/view/profile/personal_data_view.dart';
+import 'package:fflex/view/profile/profile_view.dart';
 import 'package:fflex/view/workout_tracker/workout_detail_view.dart';
 import 'package:fflex/view/workout_tracker/workout_tracker_view.dart';
 import 'package:flutter/material.dart';
@@ -45,14 +50,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Fitness 3 in 1',
       initialRoute: '/',
       routes: {
-        '/': (context) => const WelcomeView(),
-        // '/notification': (context) => const NotificationView(),
-        // // '/personal': (context) => const PersonalDataView(),
-        // '/workout': (context) => const WorkoutTrackerView(),
-        // '/activity': (context) => const ActivityTrackerView(),
-        // // '/food-info-detail': (context) => const FoodInfoDetailsView(dObj: {}, mObj: {},),
-        // '/meal-planner':(context) => const MealPlannerView(),
-        // '/meal-food-detail':(context) => const MealFoodDetailsView(eObj: {},),
+        '/': (context) => const MainTabView(),
 
       },
       onGenerateRoute: (settings) {

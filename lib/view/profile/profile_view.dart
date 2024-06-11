@@ -2,6 +2,7 @@ import 'package:fflex/view/home/activity_traker_view.dart';
 import 'package:fflex/view/login/login_view.dart';
 import 'package:fflex/view/profile/personal_data_view.dart';
 import 'package:fflex/view/profile/setting_view.dart';
+import 'package:fflex/view/profile/support_view.dart';
 import 'package:fflex/view/workout_tracker/workout_tracker_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class _ProfileViewState extends State<ProfileView> {
     {"image": "assets/img/p_contact.png", "name": "Контакты", "tag": "5"},
   ];
   List settingArr = [
-    {"image": "assets/img/p_setting.png", "name": "Настройки", "tag": "7"},
+    {"image": "assets/img/p_setting.png", "name": "Поддержка", "tag": "7"},
   ];
   String? name;
   String? surname;
@@ -383,6 +384,25 @@ class _ProfileViewState extends State<ProfileView> {
                                     'Сабрина: 8 708 142 82 26\nНаргиза: 8 708 269 44 17\nОбщий номер: 879456\nЗвоните в любое время!'),
                               ),
                             );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: settingArr.length,
+                      itemBuilder: (context, index) {
+                        var iObj = settingArr[index] as Map? ?? {};
+                        return SettingRow(
+                          icon: iObj["image"].toString(),
+                          title: iObj["name"].toString(),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SupportView() ) );
                           },
                         );
                       },

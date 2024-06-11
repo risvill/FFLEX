@@ -313,7 +313,7 @@ class _SignUpViewState extends State<SignUpView> {
                 //   },
                 // ),
                 RoundButton(
-                    title: "Register",
+                    title: "Регистрация",
                     onPressed: () async {
                       myauth.setConfig(
                           appEmail: "fitflex@gmail.com",
